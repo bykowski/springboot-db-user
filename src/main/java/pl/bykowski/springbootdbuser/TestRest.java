@@ -20,9 +20,15 @@ public class TestRest {
     public String getTest3() {
         return "dla użytkownika";
     }
+
     @GetMapping("/test4")
     public String getTest4() {
         return "dla admina";
+    }
+
+    @GetMapping("/test5")
+    public String getTest5() {
+        return "dla admina i usera";
     }
 
 
