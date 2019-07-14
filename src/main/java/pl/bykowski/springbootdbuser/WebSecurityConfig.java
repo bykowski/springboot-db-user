@@ -42,14 +42,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/test4").hasRole("ADMIN")
                 .antMatchers("/test5").hasAnyRole("ADMIN", "USER")
                 .and()
-                .formLogin().permitAll();
+                .formLogin().permitAll()
+                .and()
+                .csrf().disable().headers().disable();
     }
 
     @EventListener(ApplicationReadyEvent.class)
     public void init() {
         AppUser appUser = new AppUser();
-        appUser.setUsername("Pucek");
-        appUser.setPassword(getPasswordEncoder().encode("Tapsik123"));
+        appUser.setUsername("Doksiu");
+        appUser.setPassword(getPasswordEncoder().encode("Festus123"));
         appUser.setUserRole(UserRole.ROLE_ADMIN);
         appUserRepo.save(appUser);
 
