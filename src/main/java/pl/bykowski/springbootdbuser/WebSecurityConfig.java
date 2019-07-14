@@ -15,10 +15,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private AppUserRepo appUserRepo;
+    private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    public WebSecurityConfig(AppUserRepo appUserRepo) {
+    public WebSecurityConfig(AppUserRepo appUserRepo, UserDetailsServiceImpl userDetailsService) {
         this.appUserRepo = appUserRepo;
+        this.userDetailsService = userDetailsService;
     }
 
     @Bean
@@ -28,15 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("Jan")
-                .password(getPasswordEncoder().encode("Jan123"))
-                .roles("ADMIN", "USER");
-
-        auth.inMemoryAuthentication()
-                .withUser("Kaśka")
-                .password(getPasswordEncoder().encode("Kaśka123"))
-                .roles("USER");
+        auth.userDetailsService(userDetailsService);
     }
 
     @Override
@@ -54,8 +48,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @EventListener(ApplicationReadyEvent.class)
     public void init() {
         AppUser appUser = new AppUser();
-        appUser.setUsername("Tapsik");
+        appUser.setUsername("Pucek");
         appUser.setPassword(getPasswordEncoder().encode("Tapsik123"));
+        appUser.setUserRole(UserRole.ROLE_ADMIN);
         appUserRepo.save(appUser);
+
+
     }
 }
